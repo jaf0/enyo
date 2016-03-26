@@ -17,19 +17,33 @@ enyo.kind({
 		{kind: "onyx.Groupbox", components: [
 			{kind: "onyx.GroupboxHeader", content: "enyo.platform"},
 			{name: "enyoPlatformJSON", content: "", style: "padding: 8px;"}
+		]},
+		{tag: "br"},
+		{kind: "onyx.Groupbox", components: [
+			{kind: "onyx.GroupboxHeader", content: "enyo.version"},
+			{name: "enyoVersionJSON", content: "", style: "padding: 8px;"}
 		]}
 	],
 	updateWindowSize: function() {
-		this.$.windowAttr.setContent("size: " + window.innerWidth + "x" + window.innerHeight +
+		var width = window.innerWidth;
+		if (width === undefined) {
+			width = document.documentElement.clientWidth;
+		}
+		var height = window.innerHeight;
+		if (height === undefined) {
+			height = document.documentElement.clientHeight;
+		}
+		this.$.windowAttr.setContent("size: " + width + "x" + height +
 			", devicePixelRatio: " + window.devicePixelRatio);
 	},
 	create: function() {
 		this.inherited(arguments);
 		this.$.uaString.setContent(navigator.userAgent);
-		this.$.enyoPlatformJSON.setContent(JSON.stringify(enyo.platform));
+		this.$.enyoPlatformJSON.setContent(JSON.stringify(enyo.platform, null, 1));
+		this.$.enyoVersionJSON.setContent(JSON.stringify(enyo.version, null, 1));
 		this.updateWindowSize();
 	},
-	resizeHandler: function() {
+	handleResize: function() {
 		this.inherited(arguments);
 		this.updateWindowSize();
 	}
